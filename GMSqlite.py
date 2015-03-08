@@ -87,8 +87,9 @@ class GMSqlite(object):
         #print user_cmd
 
         try:
-            self.db.execute(user_cmd)
+            cur = self.db.execute(user_cmd)
             self.db.commit()
+            return cur
         except:
             st = 'Invalid sqlite command'
             raise GMSqliteException, st
@@ -123,7 +124,6 @@ class GMSqlite(object):
 
         self.cmd(sq_cmd)
 
-
     def add_rec(self, table_name='', *val):
 
         if not table_name:
@@ -147,6 +147,41 @@ class GMSqlite(object):
         sq_cmd = "INSERT INTO %s VALUES (%s);"%(table_name, ','.join(val_str))
 
         self.cmd(sq_cmd)
+
+    def tables(self):
+
+        cur = self.cmd("SELECT name from sqlite_master where type='table' order by name;")
+        return [ str(s) for s in cur.fetchone() ]
+
+    def col_names(self, table_name=''):
+
+        cur = self.cmd("PRAGMA table_info(%s)"%table_name)
+        return [ str(s[1]) for s in cur.fetchall()]
+
+    def col_type(self, table_name, col_name):
+
+        if not col_name in self.col_names(table_name):
+            return ''
+        else:
+            cur = self.cmd("PRAGMA table_info(%s)"%table_name)
+            name_and_type = [ str(s[2]) for s in cur.fetchall()]
+            names = self.col_names(table_name)
+
+            return name_and_type[names.index(col_name)]
+
+    def sel(self, table_name, col=['*'], arg_str=''):
+
+        if '*' in col:
+            cur = self.cmd("SELECT * from %s %s"%(table_name, arg_str))
+        else:
+            cur = self.cmd("SELECT %s from %s %s"%(','.join(col), table_name, arg_str))
+
+        return cur.fetchall()
+
+    def del_rec(self, table_name, arg_str=''):
+
+        cur = self.cmd("DELETE from %s Where %s"%(table_name, arg_str))
+
 
 def main():
 
@@ -175,7 +210,14 @@ def main():
 
         #a.del_table('COMPANY')
 
-        a.add_rec('COMPANY', 2, 'Allen', 35, 'New York', 'ASIC', 20000)
+        #a.add_rec('COMPANY', 2, 'Allen', 35, 'New York', 'ASIC', 20000)
+
+        #print a.tables()
+        #print a.col_names('COMPANY')
+        #print a.col_type('COMPANY', 'NAME')
+        print a.sel('COMPANY')
+        #a.del_rec('COMPANY', 'ID==2')
+        #print a.sel('COMPANY')
 
     a.close()
 
