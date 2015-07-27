@@ -208,7 +208,7 @@ def main():
 
         a.open()
 
-        #xx
+        #xx test
 
         #a.del_table('COMPANY')
 
