@@ -208,6 +208,8 @@ def main():
 
         a.open()
 
+        #xx
+
         #a.del_table('COMPANY')
 
         #a.add_rec('COMPANY', 2, 'Allen', 35, 'New York', 'ASIC', 20000)
