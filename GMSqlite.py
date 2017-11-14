@@ -56,13 +56,13 @@ class GMSqlite(object):
 
         if not os.path.isfile(self.db_file):
             st = '%s is not a valid file'%self.db_file
-            raise GMSqliteException, st
+            raise GMSqliteException(st)
 
         try:
             self.db = sqlite3.connect(self.db_file)
         except:
             st = 'Can not open %s as a sqlite database.'%self.db_file
-            raise GMSqliteException, st
+            raise GMSqliteException(st)
 
     def create(self, new_db=''):
 
@@ -71,13 +71,13 @@ class GMSqlite(object):
 
         if os.path.isfile(self.db_file):
             st = '%s is already exsits'%self.db_file
-            raise GMSqliteException, st
+            raise GMSqliteException(st)
 
         try:
             self.db = sqlite3.connect(self.db_file)
         except:
             st = 'Can not create %s as a sqlite database.'%self.db_file
-            raise GMSqliteException, st
+            raise GMSqliteException(st)
 
     def close(self):
         self.db.close()
@@ -92,7 +92,7 @@ class GMSqlite(object):
             return cur
         except:
             st = 'Invalid sqlite command'
-            raise GMSqliteException, st
+            raise GMSqliteException(st)
 
     def add_table(self, table_name='', col=[]):
 
@@ -185,7 +185,7 @@ class GMSqlite(object):
 
 def main():
 
-    create = False
+    create = True
 
     a = GMSqlite('test_db')
 
@@ -217,7 +217,7 @@ def main():
         #print a.tables()
         #print a.col_names('COMPANY')
         #print a.col_type('COMPANY', 'NAME')
-        print a.sel('COMPANY')
+        print(a.sel('COMPANY'))
         #a.del_rec('COMPANY', 'ID==2')
         #print a.sel('COMPANY')
 
