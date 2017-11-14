@@ -84,7 +84,7 @@ class GMSqlite(object):
 
     def cmd(self, user_cmd=''):
 
-        #print user_cmd
+        #print(user_cmd)
 
         try:
             cur = self.db.execute(user_cmd)
@@ -214,12 +214,12 @@ def main():
 
         #a.add_rec('COMPANY', 2, 'Allen', 35, 'New York', 'ASIC', 20000)
 
-        #print a.tables()
-        #print a.col_names('COMPANY')
-        #print a.col_type('COMPANY', 'NAME')
+        #print(a.tables())
+        #print(a.col_names('COMPANY'))
+        #print(a.col_type('COMPANY', 'NAME'))
         print(a.sel('COMPANY'))
         #a.del_rec('COMPANY', 'ID==2')
-        #print a.sel('COMPANY')
+        #print(a.sel('COMPANY'))
 
     a.close()
 
