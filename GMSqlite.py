@@ -223,5 +223,7 @@ def main():
 
     a.close()
 
+    print("This is a code type in sprd bj.")
+
 if __name__ == '__main__':
     main()
